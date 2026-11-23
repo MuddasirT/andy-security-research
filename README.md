@@ -21,9 +21,7 @@ Build the skills to identify, validate, document, and responsibly disclose secur
 5. Record reproducible evidence, impact, limitations, and remediation.
 6. Follow each programme's scope, rules, and disclosure process.
 
-## Planned workspace
-
-As the programme grows, research notes and practical work will be organised into:
+## Workspace
 
 - `foundations/` — networking, HTTP, Linux, and security fundamentals
 - `web-security/` — web and API security notes and lab exercises
@@ -36,7 +34,9 @@ Directories will be added when they contain useful material.
 
 ## Learning status
 
-**Academy status: Paused.** This repository is initialised, but no course day or practical assessment has been started or marked complete.
+**Ethical Hacking Academy: Lesson 1 practical completed.**
+
+The first practical lab reproduced and remediated a BOLA/IDOR issue in a local FastAPI DemoPay application. Four automated regression tests passed. See [Lab 01: DemoPay BOLA/IDOR](web-security/bola-idor-demopay-lab.md).
 
 ## Evidence note template
 
