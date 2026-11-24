@@ -27,7 +27,7 @@ source .venv/bin/activate
 python -m pip install -e .
 andy init
 andy agents
-andy submit "Prepare a safe research plan for Android exported components" --capability android-security
+andy submit "Prepare a safe research plan for Android exported components" --capability research-planning
 andy run
 andy tasks
 ```
