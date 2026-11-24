@@ -38,7 +38,7 @@ def main():
                     print(payload.get("summary", ""))
                     evidence = payload.get("evidence", [])
                     if evidence:
-                        print("\\nSources:")
+                        print("\nSources:")
                         for item in evidence:
                             print(
                                 f"- [{item.get('source_id', 'source')}] "
