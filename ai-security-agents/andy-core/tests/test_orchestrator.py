@@ -23,7 +23,15 @@ class OrchestratorTests(unittest.TestCase):
         self.assertEqual(saved.task_id, task.task_id)
         self.assertEqual(saved.status, "completed")
         self.assertEqual(saved.assigned_agent, "research-planner")
-        self.assertIn("Research plan", json.loads(saved.result)["summary"])
+        payload = json.loads(saved.result)
+        self.assertIn("Research plan", payload["summary"])
+        self.assertEqual(payload["quality_gate"]["status"], "approved")
+        self.assertEqual(payload["report"]["scope"]["authorization_status"], "unknown")
+        self.assertEqual(payload["report"]["claims"][0]["classification"], "inference")
+        self.assertIn(
+            "The agent summary is classified as inference",
+            " ".join(payload["report"]["limitations"]),
+        )
 
     def test_unknown_capability_is_not_silently_discarded(self):
         task = self.andy.submit("Needs a specialist", "not-yet-installed")
