@@ -16,9 +16,10 @@ class AgentFactoryTests(unittest.TestCase):
             agents = build_agents()
         self.assertEqual(
             [agent.spec.agent_id for agent in agents],
-            ["research-planner", "llm-researcher"],
+            ["research-planner", "android-source-researcher", "llm-researcher"],
         )
         self.assertEqual(agents[1].model.model, "qwen3:8b")
+        self.assertIs(agents[1].model, agents[2].model)
 
     def test_unknown_provider_fails_fast(self):
         with patch.dict(os.environ, {"ANDY_LLM_PROVIDER": "unknown"}, clear=True):
