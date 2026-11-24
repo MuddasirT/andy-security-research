@@ -5,18 +5,18 @@ Last updated: 2026-11-24
 | Component | State |
 |---|---|
 | Repository access | Verified |
-| Architecture and safety policy | Committed |
-| SQLite task ledger | Implemented in source |
-| Capability-based orchestrator | Implemented in source |
-| Planning specialist | Implemented in source |
-| CLI | Implemented in source |
-| Regression tests | Committed; execution not yet verified |
-| GitHub Actions CI workflow | Committed; run not yet observed |
-| Local installation and execution | Not yet verified |
-| LLM provider connection | Not configured |
+| SQLite task ledger | Implemented; user confirmed local task execution |
+| Capability-based orchestrator | Implemented; worker identity bug fixed |
+| Deterministic planning specialist | Implemented; local execution confirmed by user |
+| Ollama chat adapter | Committed; local connection not yet verified |
+| LLM research analyst | Implemented; no external tools or action permissions |
+| Agent factory | Ollama specialist is opt-in through environment configuration |
+| Unit tests | Committed; latest local execution not yet confirmed |
+| GitHub Actions CI | Workflow committed; latest run not yet checked |
+| Web research and evidence collection | Not connected |
 | Background workers / scheduler | Not deployed |
-| External tools | Not connected |
+| Persistent specialist knowledge bases | Not deployed |
 
-The latest workflow commit is `f045cd9f7bf923618db51100578849951ed8e206`. No workflow run was returned for that commit at the time of this status update.
+The first local task completed successfully on the user's Mac. The LLM integration is committed but still requires a local Ollama installation, model download, test-suite run, and real inference test.
 
 Do not describe the organisation as always-on or its agents as independently online until deployment and health checks verify that state.
