@@ -21,10 +21,13 @@
 
 ## Milestone 3: Evidence-backed research
 
-- [ ] Add approved web-search connector behind a narrow interface
-- [ ] Store source URLs, retrieval timestamps, and quoted evidence
-- [ ] Require evidence for current/version-sensitive claims
-- [ ] Add independent reviewer agent and disagreement handling
+- [x] Add a narrow source-fetching interface with a fixed Android Developers/OWASP allowlist
+- [x] Store source URLs, retrieval timestamps, publisher/title, and bounded text excerpts in task evidence
+- [x] Require source IDs for material factual claims in Android source-backed reports
+- [x] Add a second model-pass reviewer that checks claims against supplied evidence
+- [ ] Add a broader approved web-search connector with query-time source discovery
+- [ ] Add citation-integrity checks and structured disagreement handling
+- [ ] Run and verify the complete test suite on the user's Mac and CI
 
 ## Milestone 4: Specialist organisation
 
