@@ -54,8 +54,8 @@ Items are marked complete when implemented and verified, not merely planned.
 - [x] Integrate quality validation into orchestration and persist the report and gate verdict
 - [ ] Add independent source provenance and citation-support verification
 - [ ] Add technical accuracy rule packs, beginning with Android component security
-- [ ] Build a policy-enforcing tool gateway around the authorisation registry
-- [ ] Bind each executable task to an explicit, owner-approved scope and plan digest
+- [x] Build a fail-closed policy-enforcing tool gateway core around the authorisation registry
+- [ ] Integrate the gateway with orchestration and bind executable tasks to an explicit, owner-approved scope and plan digest
 - [ ] Add read-only local artifact analysis tools
 - [ ] Add isolated web/API/mobile/cloud lab adapters with operation-level approval
 - [ ] Add Blue Team remediation proposals with human-approved change execution
