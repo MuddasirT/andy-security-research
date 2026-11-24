@@ -8,10 +8,13 @@ Andy Core is the executable foundation of the Andy multi-agent research organisa
 - Central orchestrator that assigns work by declared capability
 - Deterministic planning specialist
 - Optional Ollama-backed LLM research analyst
+- Allowlisted Android Developers and OWASP source retrieval for Android security tasks
+- Evidence records with source IDs, URLs, retrieval timestamps, and bounded excerpts
+- Evidence-constrained synthesis followed by a separate reviewer pass
 - Auditable task results and execution events
 - Unit tests that exercise the LLM agent with a fake model, without requiring a downloaded LLM
 
-The LLM analyst reasons from its model's internal knowledge. It does **not** browse the web, access files or repositories, execute shell commands, or take external actions. It must flag current claims for independent verification.
+The general LLM analyst reasons from model knowledge and does not browse. Android security tasks are routed first to a source-backed specialist that retrieves a fixed allowlist of Android Developers and OWASP pages, stores bounded excerpts and retrieval timestamps, and asks the model to cite source IDs. A second model pass reviews the draft against those excerpts. This is an evidence-alignment check, not a human audit or a guarantee of completeness. The source specialist does not access APKs, repositories, devices, or arbitrary URLs.
 
 ## Requirements
 
@@ -83,6 +86,10 @@ The LLM specialist uses Ollama's local chat API at `/api/chat`. The default URL 
 | `ANDY_LLM_PROVIDER` | Enable model provider | unset (LLM disabled) |
 | `ANDY_OLLAMA_URL` | Ollama local API base URL | `http://127.0.0.1:11434` |
 | `ANDY_OLLAMA_MODEL` | Model tag installed in Ollama | `qwen3:8b` |
+| `ANDY_OLLAMA_TIMEOUT` | Request timeout in seconds | `600` |
+| `ANDY_OLLAMA_THINK` | Enable model thinking (`true`/`false`) | `false` |
+| `ANDY_OLLAMA_NUM_CTX` | Context window | `8192` |
+| `ANDY_OLLAMA_NUM_PREDICT` | Maximum generated tokens | `1200` |
 
 ## Safety and design
 
