@@ -1,34 +1,44 @@
-# Andy Empire Build Roadmap
+# Andy Core Roadmap
 
-## Phase 0: Foundation (this commit series)
-- [x] Confirm the GitHub project and write access
-- [x] Define command hierarchy and safety boundaries
-- [x] Add local persistent task ledger and capability-based routing
-- [x] Add a planning specialist and CLI
-- [ ] Run local tests on the owner's machine
+## Milestone 1: Executable orchestration foundation
 
-## Phase 1: Working local command centre
-- Add automated tests and structured event inspection
-- Add configuration, health checks, backups, and database migrations
-- Add a provider-neutral LLM interface (local model first, hosted provider optional)
-- Add explicit tool permissions and per-task budgets
+- [x] SQLite task ledger and event log
+- [x] Specialist registry and capability-based routing
+- [x] Deterministic planning worker
+- [x] CLI for task submission and execution
+- [x] Unit tests for routing and persistence
+- [x] Fix worker identity lookup in the orchestrator
 
-## Phase 2: Real specialist workforce
-- Research analyst, Android/Kotlin engineer, AI/ML analyst, cybersecurity analyst, and verifier
-- Specialist playbooks, curated knowledge, benchmark tasks, and versioning
-- Reviewer workflow: draft -> critique -> revision -> accepted/rejected
+## Milestone 2: Local model reasoning
 
-## Phase 3: Persistent operations
-- Separate worker processes and durable queue
-- Scheduled research jobs and notification digests
-- Monitoring, retry policy, failure quarantine, and manual pause/resume
-- Encrypted secrets management and tested backups
+- [x] Provider boundary for local model chat
+- [x] Ollama adapter using Python standard library
+- [x] LLM research analyst with bounded instructions
+- [x] Explicit limitation reporting and no-tool safety boundary
+- [x] Mock-based unit test that does not require Ollama
+- [ ] Verify test suite on the user's Mac
+- [ ] Verify a real Ollama model response on the user's Mac
 
-## Phase 4: Expand carefully
-- Add specialists only when a repeatable task and evaluation set justify them
-- Scale concurrency based on hardware, latency, and budget
-- Optional cloud workers while keeping the home-hosted control plane portable
+## Milestone 3: Evidence-backed research
 
-## Release gate
+- [ ] Add approved web-search connector behind a narrow interface
+- [ ] Store source URLs, retrieval timestamps, and quoted evidence
+- [ ] Require evidence for current/version-sensitive claims
+- [ ] Add independent reviewer agent and disagreement handling
 
-A phase is complete only when its tests pass, documentation is updated, permissions are reviewed, and the result can be reproduced. A checked box means code or documentation exists, not that a service is running in production.
+## Milestone 4: Specialist organisation
+
+- [ ] Android/Kotlin specialist
+- [ ] AI/ML specialist
+- [ ] Defensive security specialist
+- [ ] Research librarian and knowledge curator
+- [ ] Specialist-specific evaluation suites and versioned knowledge
+
+## Milestone 5: Reliable operations
+
+- [ ] Background worker service and scheduler
+- [ ] Retry policy, timeouts, cancellation, and concurrency limits
+- [ ] Monitoring, health checks, backups, and recovery
+- [ ] Human approval gates for consequential actions
+
+Items are marked complete when implemented and verified, not merely planned.
