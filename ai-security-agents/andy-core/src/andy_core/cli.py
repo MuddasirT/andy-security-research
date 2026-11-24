@@ -34,6 +34,22 @@ def main():
             print(f"{t.status:10} {t.task_id} [{t.capability}] {t.title}")
             if t.result:
                 try:
-                    print(json.loads(t.result)["summary"])
+                    payload = json.loads(t.result)
+                    print(payload.get("summary", ""))
+                    evidence = payload.get("evidence", [])
+                    if evidence:
+                        print("\\nSources:")
+                        for item in evidence:
+                            print(
+                                f"- [{item.get('source_id', 'source')}] "
+                                f"{item.get('title', 'Untitled')} "
+                                f"({item.get('publisher', 'Unknown publisher')})"
+                            )
+                            print(f"  URL: {item.get('url', '')}")
+                            print(f"  Retrieved: {item.get('retrieved_at', 'unknown')}")
                 except (ValueError, KeyError, TypeError):
                     print(t.result)
+
+
+if __name__ == "__main__":
+    main()
