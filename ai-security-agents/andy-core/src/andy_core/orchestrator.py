@@ -26,7 +26,9 @@ def _normalise_evidence(agent_id: str, items: list[dict]) -> list[dict]:
         if not isinstance(locator, str) or not locator.strip():
             locator = f"agent-evidence://{agent_id}/{evidence_id}"
         evidence_type = item.get("evidence_type")
-        if evidence_type not in {"source", "artifact", "observation", "test_result", "log", "other"}:
+        if not isinstance(evidence_type, str) or evidence_type not in {
+            "source", "artifact", "observation", "test_result", "log", "other"
+        }:
             evidence_type = "source" if item.get("url") or item.get("source_id") else "other"
         captured_at = item.get("captured_at") or item.get("retrieved_at") or utc_now()
         if not isinstance(captured_at, str):
@@ -47,12 +49,15 @@ def _normalise_evidence(agent_id: str, items: list[dict]) -> list[dict]:
 def _build_quality_report(task: Task, agent_id: str, summary: str,
                           evidence: list[dict], limitations: list[str]) -> dict:
     """Wrap legacy agent output as inference, never as a verified finding."""
-    report_limitations = list(limitations)
+    report_limitations = list(limitations) if isinstance(limitations, list) else [
+        "Specialist returned limitations in an unsupported format."
+    ]
     report_limitations.extend([
         "The quality gate checks report structure and evidence linkage, not factual truth or source authority.",
         "Task text does not grant testing permission. Authorisation must be checked separately by the scope gateway.",
         "The agent summary is classified as inference until each factual claim is independently evidenced and reviewed.",
     ])
+    evidence = evidence if isinstance(evidence, list) else []
     return {
         "schema_version": "1.0",
         "report_id": task.task_id,
