@@ -36,6 +36,14 @@ def main():
                 try:
                     payload = json.loads(t.result)
                     print(payload.get("summary", ""))
+                    gate = payload.get("quality_gate")
+                    if gate:
+                        print(
+                            f"Quality Gate: {gate.get('status', 'unknown')} "
+                            f"({len(gate.get('issues', []))} issue(s))"
+                        )
+                        for issue in gate.get("issues", []):
+                            print(f"  - {issue.get('code')}: {issue.get('message')}")
                     evidence = payload.get("evidence", [])
                     if evidence:
                         print("\nSources:")

@@ -45,3 +45,25 @@
 - [ ] Human approval gates for consequential actions
 
 Items are marked complete when implemented and verified, not merely planned.
+
+
+## Milestone 6: Security quality and agentic lab
+
+- [x] Define technology-independent Security Report Contract v1
+- [x] Add deterministic report validation for required fields, evidence references, claim classification, severity rationale, and test evidence
+- [x] Integrate quality validation into orchestration and persist the report and gate verdict
+- [ ] Add independent source provenance and citation-support verification
+- [ ] Add technical accuracy rule packs, beginning with Android component security
+- [ ] Build a policy-enforcing tool gateway around the authorisation registry
+- [ ] Bind each executable task to an explicit, owner-approved scope and plan digest
+- [ ] Add read-only local artifact analysis tools
+- [ ] Add isolated web/API/mobile/cloud lab adapters with operation-level approval
+- [ ] Add Blue Team remediation proposals with human-approved change execution
+- [ ] Add Purple Team retest evidence and reviewer-controlled closure
+- [ ] Add cross-platform domain packs and specialist evaluation suites
+
+See [AGENTIC_SECURITY_LAB_PLAN.md](AGENTIC_SECURITY_LAB_PLAN.md) for the target
+workflow, safety architecture, and staged implementation sequence.
+
+Items are marked complete only when implemented and verified. The current security
+specialists remain analysis-only until the tool gateway and approved adapters exist.
