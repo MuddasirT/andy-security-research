@@ -90,7 +90,7 @@ must not recursively create unlimited work or expand their own permissions.
 ## Immediate implementation sequence
 
 1. Integrate the universal quality gate into orchestration and task persistence.
-2. Build a policy-enforcing tool gateway around the existing authorisation registry.
+2. [x] Build a fail-closed policy-enforcing tool gateway around the existing authorisation registry.
 3. Add an explicit owner approval workflow and scope-to-task binding.
 4. Add a local, read-only artifact analysis adapter and a deliberately vulnerable lab fixture.
 5. Add web/API static and read-only discovery packs, then mobile and cloud packs.
@@ -101,8 +101,11 @@ must not recursively create unlimited work or expand their own permissions.
 ## Current reality
 
 The existing six agents are analysis workers, not autonomous tool operators. The
-SQLite authorisation registry records scopes but is not yet wired into a tool
-gateway. The current quality gate validates report shape and evidence references;
-it does not prove factual correctness, source authenticity, or vulnerability
-exploitability. Do not describe later stages as implemented until they are built
-and tested.
+SQLite authorisation registry and a fail-closed tool gateway core now exist, but
+the gateway is not yet integrated into the orchestrator and no scanner or
+exploitation adapters are registered. The gateway requires a caller-supplied
+approval checker for active and state-changing operations; the concrete owner
+approval workflow and scope-to-task binding remain future work. The current
+quality gate validates report shape and evidence references; it does not prove
+factual correctness, source authenticity, or vulnerability exploitability.
+Do not describe later stages as implemented until they are built and tested.
