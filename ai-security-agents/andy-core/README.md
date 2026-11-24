@@ -11,16 +11,46 @@ Andy Core is the executable foundation of the Andy multi-agent research organisa
 - Allowlisted Android Developers and OWASP source retrieval for Android security tasks
 - Evidence records with source IDs, URLs, retrieval timestamps, and bounded excerpts
 - Evidence-constrained synthesis followed by a separate reviewer pass
+- Dedicated Red, Blue, and Purple Team LLM specialists with separate prompts and capabilities
+- Persistent, fail-closed authorisation scope registry for future tool adapters
 - Auditable task results and execution events
-- Unit tests that exercise the LLM agent with a fake model, without requiring a downloaded LLM
+- Unit tests that exercise agents with a fake model, without requiring a downloaded LLM
 
 The general LLM analyst reasons from model knowledge and does not browse. Android security tasks are routed first to a source-backed specialist that retrieves a fixed allowlist of Android Developers and OWASP pages, stores bounded excerpts and retrieval timestamps, and asks the model to cite source IDs. A second model pass reviews the draft against those excerpts. This is an evidence-alignment check, not a human audit or a guarantee of completeness. The source specialist does not access APKs, repositories, devices, or arbitrary URLs.
+
+### Security divisions
+
+When Ollama is enabled, Andy registers three distinct workers:
+
+| Capability | Specialist | Primary responsibility |
+|---|---|---|
+| `red-team-analysis` | Red Team | Threat modelling, attack-surface review, weakness hypotheses, and safe lab validation plans |
+| `blue-team-defense` | Blue Team | Secure architecture, hardening, detection, incident analysis, and remediation |
+| `purple-team-validation` | Purple Team | Correlating findings with controls, designing safe validation, and defining retest evidence |
+
+Example task routing:
+
+```bash
+andy submit "Review this Android manifest for exported-component risks" \
+  --capability red-team-analysis \
+  --description "Owned demo app. Manifest excerpt: ..."
+andy submit "Design defensive controls for exported Android components" \
+  --capability blue-team-defense \
+  --description "Review the supplied manifest and recommend mitigations."
+andy submit "Map these findings to detection and regression controls" \
+  --capability purple-team-validation \
+  --description "Finding: ... Existing controls: ... Available test evidence: ..."
+andy run
+andy tasks
+```
+
+These are functional LLM analysis workers, not autonomous penetration-testing or production-defence tools. They have no shell, network, browser, repository, APK, emulator, or device access. They cannot scan, exploit, or modify a target. The scope registry records exact targets, allowed operations, time windows, and approval references; future tool adapters must call its fail-closed authorisation check before any operation. Registering a scope does not itself create or enable a tool. Agent prompts are not a security boundary.
 
 ## Requirements
 
 - Python 3.11+
 - No third-party Python runtime dependencies
-- Ollama only if you enable the local LLM specialist
+- Ollama only if you enable the local LLM specialists
 
 ## Install and initialise
 
@@ -42,7 +72,7 @@ andy run
 andy tasks
 ```
 
-## Enable the local LLM specialist
+## Enable the local LLM specialists
 
 1. Install and start Ollama: https://ollama.com
 2. Download a model in Ollama, for example:
@@ -60,7 +90,7 @@ export ANDY_OLLAMA_MODEL=qwen3:8b
 # export ANDY_OLLAMA_URL=http://127.0.0.1:11434
 ```
 
-4. Restart the CLI command and confirm the specialist is registered:
+4. Restart the CLI command and confirm the specialists are registered:
 
 ```bash
 andy agents
@@ -76,7 +106,7 @@ andy run
 andy tasks
 ```
 
-The LLM specialist uses Ollama's local chat API at `/api/chat`. The default URL is `http://127.0.0.1:11434`; override it with `ANDY_OLLAMA_URL`. The default model is `qwen3:8b`; override it with `ANDY_OLLAMA_MODEL`.
+The LLM specialists use Ollama's local chat API at `/api/chat`. The default URL is `http://127.0.0.1:11434`; override it with `ANDY_OLLAMA_URL`. The default model is `qwen3:8b`; override it with `ANDY_OLLAMA_MODEL`.
 
 ## Configuration
 
@@ -93,6 +123,6 @@ The LLM specialist uses Ollama's local chat API at `/api/chat`. The default URL 
 
 ## Safety and design
 
-Andy is the orchestrator, not an omniscient model. Workers have explicit capabilities. The first LLM worker has no tools or external-action permissions. Model output is untrusted and must be verified before consequential use. Human approval remains required for future consequential actions.
+Andy is the orchestrator, not an omniscient model. Workers have explicit capabilities. Security specialists are analysis-only. The persistent scope registry is a policy primitive for future tool adapters, not an action system; enforcement must happen in the adapter immediately before the operation. Model output is untrusted and must be verified before consequential use. Human approval remains required for consequential actions.
 
 See [the build roadmap](ROADMAP.md), [architecture](ARCHITECTURE.md), and [safety policy](SAFETY.md).
