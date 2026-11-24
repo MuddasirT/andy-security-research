@@ -4,6 +4,7 @@ import os
 from .agents import PlanningAgent
 from .llm import OllamaChatModel
 from .llm_agent import LLMResearchAgent
+from .research_agent import SourceBackedAndroidResearchAgent
 
 
 def build_agents():
@@ -11,7 +12,10 @@ def build_agents():
     provider = os.getenv("ANDY_LLM_PROVIDER", "").strip().lower()
 
     if provider == "ollama":
-        agents.append(LLMResearchAgent(OllamaChatModel()))
+        model = OllamaChatModel()
+        # Android security tasks prefer the evidence-backed worker.
+        agents.append(SourceBackedAndroidResearchAgent(model))
+        agents.append(LLMResearchAgent(model))
     elif provider:
         raise ValueError(
             f"Unsupported ANDY_LLM_PROVIDER={provider!r}. "
