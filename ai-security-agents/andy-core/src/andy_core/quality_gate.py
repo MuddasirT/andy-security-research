@@ -50,8 +50,14 @@ def _is_iso_datetime(value: Any) -> bool:
 def _valid_locator(value: Any) -> bool:
     if not _non_empty_string(value):
         return False
-    parsed = urlparse(value)
-    return parsed.scheme in {"http", "https", "file", "urn"} if parsed.scheme else True
+    try:
+        parsed = urlparse(value)
+        return parsed.scheme in {"http", "https", "file", "urn"} if parsed.scheme else True
+    except ValueError:
+        return False
+
+def _one_of(value: Any, choices: set[str]) -> bool:
+    return isinstance(value, str) and value in choices
 
 def validate_report(report: Mapping[str, Any]) -> QualityGateResult:
     """Check report structure and evidence linkage, not factual truth or source authority."""
@@ -78,9 +84,9 @@ def validate_report(report: Mapping[str, Any]) -> QualityGateResult:
     else:
         if not _non_empty_string(scope.get("summary")):
             add("REQUIRED_FIELD_MISSING", "scope.summary", "A scope summary is required.")
-        if scope.get("authorization_status") not in {
+        if not _one_of(scope.get("authorization_status"), {
             "authorized", "hypothetical", "not_applicable", "unknown"
-        }:
+        }):
             add("INVALID_AUTHORIZATION_STATUS", "scope.authorization_status",
                 "Use authorized, hypothetical, not_applicable, or unknown.")
 
@@ -110,7 +116,7 @@ def validate_report(report: Mapping[str, Any]) -> QualityGateResult:
             add("DUPLICATE_EVIDENCE_ID", f"{path}.evidence_id", f"Duplicate evidence ID: {evidence_id}.")
             continue
         evidence_by_id[evidence_id] = item
-        if item.get("evidence_type") not in EVIDENCE_TYPES:
+        if not _one_of(item.get("evidence_type"), EVIDENCE_TYPES):
             add("INVALID_EVIDENCE_TYPE", f"{path}.evidence_type", "Unsupported evidence type.")
         if not _valid_locator(item.get("locator")):
             add("INVALID_EVIDENCE_LOCATOR", f"{path}.locator", "A stable non-empty locator is required.")
@@ -135,7 +141,7 @@ def validate_report(report: Mapping[str, Any]) -> QualityGateResult:
         if not _non_empty_string(claim.get("text")):
             add("CLAIM_TEXT_MISSING", f"{path}.text", "Claim text is required.")
         classification = claim.get("classification")
-        if classification not in CLAIM_CLASSIFICATIONS:
+        if not _one_of(classification, CLAIM_CLASSIFICATIONS):
             add("INVALID_CLAIM_CLASSIFICATION", f"{path}.classification", "Unsupported claim classification.")
         refs = claim.get("evidence_refs", [])
         if not isinstance(refs, list) or any(not _non_empty_string(ref) for ref in refs):
@@ -150,7 +156,7 @@ def validate_report(report: Mapping[str, Any]) -> QualityGateResult:
                 "A verified claim must reference at least one evidence item.")
         severity = claim.get("severity")
         if severity is not None:
-            if severity not in SEVERITY_LEVELS:
+            if not _one_of(severity, SEVERITY_LEVELS):
                 add("INVALID_SEVERITY", f"{path}.severity", "Unsupported severity level.")
             if not _non_empty_string(claim.get("severity_rationale")):
                 add("SEVERITY_RATIONALE_MISSING", f"{path}.severity_rationale",
@@ -171,7 +177,7 @@ def validate_report(report: Mapping[str, Any]) -> QualityGateResult:
             add("INVALID_TEST_ID", f"{path}.test_id", "Each test requires a unique non-empty test_id.")
         else:
             test_ids.add(test_id)
-        if test.get("status") not in {"planned", "executed", "blocked", "not_applicable"}:
+        if not _one_of(test.get("status"), {"planned", "executed", "blocked", "not_applicable"}):
             add("INVALID_TEST_STATUS", f"{path}.status", "Unsupported test status.")
         if not _non_empty_string(test.get("expected")):
             add("TEST_EXPECTATION_MISSING", f"{path}.expected", "Each test requires an expected result.")
