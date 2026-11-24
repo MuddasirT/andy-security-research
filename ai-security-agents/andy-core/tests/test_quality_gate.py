@@ -84,6 +84,24 @@ class QualityGateTests(unittest.TestCase):
         self.assertIn("INVALID_CLAIM_CLASSIFICATION",
                       {x.code for x in validate_report(report).issues})
 
+
+    def test_malformed_untrusted_field_types_return_issues_not_exceptions(self):
+        report = valid_report()
+        report["scope"]["authorization_status"] = []
+        report["claims"][0]["classification"] = {}
+        report["claims"][0]["severity"] = []
+        report["evidence"][0]["evidence_type"] = {}
+        report["tests"][0]["status"] = []
+        result = validate_report(report)
+        self.assertEqual(result.status, "revise")
+        self.assertGreater(len(result.issues), 0)
+
+    def test_malformed_locator_is_rejected_cleanly(self):
+        report = valid_report()
+        report["evidence"][0]["locator"] = "http://[invalid-ipv6"
+        result = validate_report(report)
+        self.assertIn("INVALID_EVIDENCE_LOCATOR", {x.code for x in result.issues})
+
     def test_unknown_authorisation_is_flagged(self):
         report = valid_report()
         report["scope"]["authorization_status"] = "maybe"
