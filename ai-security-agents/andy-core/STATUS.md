@@ -12,10 +12,10 @@ Last updated: 2026-11-24
 | LLM research analyst | Implemented; no external tools or action permissions |
 | Agent factory | Ollama specialist is opt-in through environment configuration |
 | Unit tests | Committed; latest local execution not yet confirmed |
-| GitHub Actions CI | Main-branch quality-gate v1 CI passed; orchestrator integration CI pending |
+| GitHub Actions CI | Quality gate, orchestrator integration, and tool gateway PR CI passed |
 | Web research and evidence collection | Not connected |
 | Background workers / scheduler | Not deployed |
-| Persistent specialist knowledge bases | Not deployed |\n| Universal security report contract v1 | Implemented and merged to main |\n| Deterministic quality validator | Implemented and merged to main |\n| Orchestrator quality-gate integration | Merged to main; CI passed |\n| Policy-enforced tool gateway core | Implemented on feature branch; awaiting CI and merge |\n| Security tool gateway | Fail-closed core implemented; not yet wired into orchestrator and no adapters registered |\n| Red/Blue/Purple execution tools | Not available; specialists remain analysis-only |
+| Persistent specialist knowledge bases | Not deployed |\n| Universal security report contract v1 | Implemented and merged to main |\n| Deterministic quality validator | Implemented and merged to main |\n| Orchestrator quality-gate integration | Merged to main; CI passed |\n| Policy-enforced tool gateway core | Merged to main; PR CI passed; no adapters registered |\n| Security tool gateway | Fail-closed core implemented; not yet wired into orchestrator and no adapters registered |\n| Red/Blue/Purple execution tools | Not available; specialists remain analysis-only |
 
 The first local task completed successfully on the user's Mac. The LLM integration is committed but still requires a local Ollama installation, model download, test-suite run, and real inference test.
 
